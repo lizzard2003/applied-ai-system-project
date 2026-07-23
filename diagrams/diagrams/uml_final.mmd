@@ -1,0 +1,91 @@
+```mermaid
+%% Class diagram reverse-engineered from the actual implementation in
+%% pawpal_system.py. Compare against uml_draft.mmd (the original design) to
+%% see how the system grew: Owner and Scheduler were added, Task became a
+%% first-class entity, and PetTasks/TimeConstraint remain design-only stubs.
+classDiagram
+    class Owner {
+        +str name
+        +list~PetInformation~ pets
+        +getOwnerName() str
+        +addPet(pet) void
+        +removePet(pet) void
+        +getPets() list
+        +getPetCount() int
+        +getAllTasks() list
+        +getTotalTaskCount() int
+    }
+
+    class Scheduler {
+        +Owner owner
+        +getAllTasks() list
+        +filter_tasks(pet, pet_name, completed, frequency) list
+        +getTasksByFrequency(frequency) list
+        +getTasksByTime(time) list
+        +getTasksByPet(pet) list
+        +getCompletedTasks() list
+        +getIncompleteTasks() list
+        +sort_by_time(tasks) list
+        +sortTasksByFrequency() list
+        +detectConflicts() list
+        +conflict_warnings() list
+        +has_conflicts() bool
+        +markTaskComplete(task) Task
+        +resetAllTasks() void
+        +getScheduleForDay(day) list
+    }
+
+    class Task {
+        +str description
+        +str time
+        +str frequency
+        +bool completion_status
+        +date due_date
+        +getTimeInMinutes() int
+        +getDueDate() date
+        +next_occurrence() Task
+        +getDescription() str
+        +getTime() str
+        +getFrequency() str
+        +getCompletionStatus() bool
+        +markComplete() void
+        +resetTask() void
+    }
+
+    class PetInformation {
+        +str name
+        +int age
+        +str breed
+        +str color
+        +list~Task~ tasks
+        +getPetName() str
+        +getAge() int
+        +getBreed() str
+        +getColor() str
+        +addTask(task) void
+        +removeTask(task) void
+        +getTasks() list
+        +getTaskCount() int
+    }
+
+    class PetTasks {
+        +TimeConstraint timeConstraint
+        +feedPet() str
+        +walkPet() str
+        +petSit() str
+    }
+
+    class TimeConstraint {
+        +int taskDuration
+        +int availability
+        +str repetition
+        +getTaskDuration() int
+        +getAvailability() int
+        +getRepetition() str
+    }
+
+    Owner "1" --> "0..*" PetInformation : owns
+    PetInformation "1" --> "0..*" Task : has
+    Scheduler "1" --> "1" Owner : schedules for
+    PetTasks "1" --> "1" TimeConstraint : has
+```

@@ -1,0 +1,31 @@
+```mermaid
+classDiagram
+    class PetInformation {
+        +String name
+        +int age
+        +String breed
+        +String color
+        +getPetName(): String
+        +getAge() : int
+        +getBreed() :String
+        +getColor() :String
+    }
+
+    class PetTasks {
+        +feedPet() : String
+        +walkPet() : String
+        +petSit() :String
+    }
+
+    class TimeConstraint {
+        +String taskDuration 
+        +String availability 
+        +String repetition
+        +getTaskDuration() : int
+        +getAvailability() : int
+        +getRepetition() : String
+    }
+
+    PetInformation "1" --> "0..*" PetTasks : manages
+    PetTasks "1" --> "1" TimeConstraint : has
+```
