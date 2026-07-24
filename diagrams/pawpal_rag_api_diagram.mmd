@@ -1,0 +1,15 @@
+flowchart TD
+    A[User asks PawPal about a pet] --> B[Input Processing]
+    B --> C{Input Type}
+    C -->|Image upload| D[Vision API]
+    C -->|Text description| E[LLM / NLP Processing]
+
+    D --> F[Extract pet features]
+    E --> F
+
+    F --> G[Pet Recognition Layer<br/>Example: orange/black/brown cat]
+    G --> H[RAG Retrieval Layer]
+    H --> I[Knowledge Base<br/>Pet facts, breed info, care tips]
+    I --> J[Relevant Context Retrieved]
+    J --> K[LLM Response Generation]
+    K --> L[Helpful PawPal Answer<br/>Breed, behavior, care advice]
