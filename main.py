@@ -26,6 +26,20 @@ pet2.addTask(mittens_breakfast)  # 09:00 — cross-pet clash (Toby vs Mittens)
 scheduler = Scheduler(owner)
 
 
+def show_pets(owner):
+    """Print each pet's basic details plus its general care information.
+
+    'Toby' is an Australian Shepherd (in the knowledge base) so it prints
+    specific info; 'Mittens' is a Tortoiseshell, also known. Try changing a
+    breed to something unknown to see the generalized fallback answer.
+    """
+    print(f"\n{owner.getOwnerName()}'s pets ({owner.getPetCount()}):")
+    for pet in owner.getPets():
+        print(f"  - {pet.getPetName()}: {pet.getAge()} yrs, "
+              f"{pet.getBreed()}, {pet.getColor()}")
+        print(f"      info: {pet.getGeneralInfo()}")
+
+
 def show(title, tasks):
     """Print a titled list of tasks in a consistent format."""
     print(f"\n{title}")
@@ -40,6 +54,10 @@ def show(title, tasks):
 # Mark one task done so the status filters have something to show. Completing a
 # daily task auto-creates its next occurrence, due one day later.
 scheduler.markTaskComplete(breakfast_task)
+
+# 0. Generalized pet information: specific note if the breed is known, else a
+#    generalized fallback answer.
+show_pets(owner)
 
 # 1. Sorting: tasks were added out of order; sort_by_time puts them right.
 show("All tasks, sorted by time:", scheduler.sort_by_time())

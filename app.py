@@ -1,5 +1,5 @@
 import streamlit as st
-from pawpal_system import Owner,Task,PetInformation,Scheduler
+from pawpal_system import Owner,Task,PetInformation,Scheduler,getPetInformation
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -93,6 +93,9 @@ else:
             pet = PetInformation(pet_name, int(pet_age), pet_breed, pet_color)
             owner.addPet(pet)                                    # <-- the class method
             st.success(f"Added pet '{pet_name}' to {pet_owner_name}")
+            # Look up care info for this breed: specific if the knowledge base
+            # has it, otherwise a generalized answer.
+            st.info(f"ℹ️ **{pet_name}** ({pet_breed}): {pet.getGeneralInfo()}")
 
     # Show this owner's pets by reading back from the object.
     owner = st.session_state.owners[pet_owner_name]

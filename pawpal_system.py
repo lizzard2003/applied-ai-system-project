@@ -21,6 +21,37 @@ PRIORITY_WEIGHTS = {
 }
 DEFAULT_PRIORITY = "medium"
 
+# Local "knowledge base" of breed care notes. In the RAG diagram this is the
+# Knowledge Base box; here it's a plain dict so the lookup needs no API or
+# network. Keys are lowercased breeds so lookups are case-insensitive.
+PET_KNOWLEDGE_BASE = {
+    "australian shepherd": "Energetic, highly intelligent herding dog. Needs "
+        "1-2 hours of vigorous exercise plus mental stimulation every day.",
+    "tortoiseshell": "Spirited, often independent cat ('tortitude'). Enjoys "
+        "daily play; keep fresh water out and groom regularly.",
+    "tabby": "Friendly, adaptable, and social cat. Thrives on daily play and "
+        "a steady feeding routine.",
+    "labrador retriever": "Outgoing, food-motivated family dog. Needs plenty of "
+        "exercise and watch its weight, as the breed gains easily.",
+    "siamese": "Vocal, affectionate, people-oriented cat. Wants lots of "
+        "interaction and can get lonely if left alone too long.",
+}
+
+
+def getPetInformation(breed: str) -> str:
+    """Return care info for a breed.
+
+    Gives the specific note when the breed is in the knowledge base, and a
+    generalized answer otherwise, matching the RAG diagram's fallback behavior.
+    """
+    if breed:
+        specific = PET_KNOWLEDGE_BASE.get(breed.strip().lower())
+        if specific:
+            return specific
+    return ("No specific notes for this breed yet. In general: provide fresh "
+            "water and daily feeding, regular exercise or play, routine vet "
+            "checkups, and grooming suited to the coat.")
+
 
 def add_one_month(day: date) -> date:
     """Return the date one calendar month after `day`, keeping the day-of-month.
@@ -470,6 +501,10 @@ class PetInformation:
     def getColor(self) -> str:
         """Return the pet's color."""
         return self.color
+
+    def getGeneralInfo(self) -> str:
+        """Return care info for this pet's breed (specific or generalized)."""
+        return getPetInformation(self.breed)
 
     def addTask(self, task: 'Task') -> None:
         """Add a task to the pet."""

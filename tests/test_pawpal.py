@@ -14,6 +14,7 @@ from pawpal_system import (
     PetInformation,
     Scheduler,
     Task,
+    getPetInformation,
     timeToMinutes,
 )
 
@@ -232,6 +233,31 @@ class TestPetInformation:
         assert pet.getTaskCount() == 1
         pet.removeTask(task)
         assert pet.getTaskCount() == 0
+
+
+# --------------------------------------------------------------------------- #
+# Generalized pet information                                                  #
+# --------------------------------------------------------------------------- #
+
+class TestGetPetInformation:
+    def test_known_breed_returns_specific_note(self):
+        info = getPetInformation("Australian Shepherd")
+        assert "herding" in info.lower()
+        assert "no specific notes" not in info.lower()
+
+    def test_unknown_breed_returns_generalized_fallback(self):
+        info = getPetInformation("Dragon")
+        assert "no specific notes" in info.lower()
+
+    def test_lookup_is_case_insensitive(self):
+        assert getPetInformation("SIAMESE") == getPetInformation("siamese")
+
+    def test_blank_breed_returns_generalized_fallback(self):
+        assert "no specific notes" in getPetInformation("").lower()
+
+    def test_get_general_info_matches_lookup(self):
+        pet = PetInformation("Milo", 5, "Siamese", "cream")
+        assert pet.getGeneralInfo() == getPetInformation("Siamese")
 
 
 # --------------------------------------------------------------------------- #

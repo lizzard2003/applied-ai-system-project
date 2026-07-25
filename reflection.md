@@ -101,3 +101,19 @@ d. Reoccurance-
 Tasks are set to reoccure it is a repetitive task that is daily or weekly.
 The app also pushes to next task on the list at Task.next_occurance.
 Another trigger is completion. Once a task is marked as complete then it does not keep reoccuring meaning it will prevent outliers.
+
+# 7. Generalized Pet Information
+
+When an owner adds a pet, the app returns care information about that pet. If
+the pet's breed is one the app knows, it gives specific info; if not, it gives a
+generalized answer instead. This is implemented as `getPetInformation(breed)` in
+pawpal_system.py, backed by a `PET_KNOWLEDGE_BASE` dictionary, and it shows up in
+both the console demo (main.py) and the Streamlit app (app.py).
+
+**Design note:** My RAG API diagram shows the full intended architecture —
+image/text input, a Vision/LLM layer, RAG retrieval from a knowledge base, and an
+LLM-generated answer. The current implementation is a simpler stand-in for that:
+a plain local dictionary lookup with a generalized fallback, so it needs no API
+key or internet and runs with just streamlit and pytest. The lookup-with-fallback
+behavior is the same shape as the diagram; swapping the dictionary for a real
+LLM/RAG call would be the next iteration.
